@@ -1,6 +1,5 @@
 ESX = nil
-local Jobs = {}
-local RegisteredSocieties = {}
+local Jobs, RegisteredSocieties = {}, {}
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
@@ -346,12 +345,10 @@ function WashMoneyCRON(d, h, m)
 		for i=1, #result, 1 do
 			local society = GetSociety(result[i].society)
 			local xPlayer = ESX.GetPlayerFromIdentifier(result[i].identifier)
-
 			-- add society money
 			TriggerEvent('esx_addonaccount:getSharedAccount', society.account, function(account)
 				account.addMoney(result[i].amount)
 			end)
-
 			-- send notification if player is online
 			if xPlayer then
 				xPlayer.showNotification(_U('you_have_laundered', ESX.Math.GroupDigits(result[i].amount)))
